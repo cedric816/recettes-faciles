@@ -82,6 +82,19 @@
                 ':hashtagId' => $lastInsertedHashtagId,
                 ':recetteId' => $lastInsertedRecetteId
             ));
+            
+            //selectionner les recettes ayant le mot clé 'nourriture'
+            $requete = "SELECT * FROM recettes 
+                        WHERE recette_id IN (SELECT assoc_hr_recette_id FROM assoc_hashtags_recettes 
+                        WHERE assoc_hr_hashtag_id IN (SELECT hashtag_id FROM hashtags WHERE hashtag_nom = :hashtag))";
+            $prepare = $connexion->prepare($requete);
+            $prepare->execute(array(
+                ':hashtag' => 'nourriture'
+            ));
+            echo("<h3>Liste des recettes ayant le mot clé 'nourriture':<h3>");
+            while ($donnee = $prepare->fetch()){
+                echo("<li>".$donnee['recette_titre']."</li>");
+            }
 
         } catch (PDOException $e) {
             exit ($e->getMessage());
