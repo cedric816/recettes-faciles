@@ -80,7 +80,7 @@
             $prepare = $connexion -> prepare($requete);
             $prepare->execute(array(
                 ':hashtagId' => $lastInsertedHashtagId,
-                'recetteId' => $lastInsertedRecetteId
+                ':recetteId' => $lastInsertedRecetteId
             ));
 
         } catch (PDOException $e) {
